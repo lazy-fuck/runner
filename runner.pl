@@ -11,7 +11,7 @@ use warnings;
 use Curses;
 use Storable qw(dclone);
 
-my $version = "0.1a";
+my $version = "0.11a";
 
 # set your greeting here
 my $greeting = "runner v$version | w/k: move up | s/j: move down | enter: run | q: quit\n";
@@ -142,16 +142,21 @@ sub draw {
 	$buffer[$selected]{name} =
 		"$selected_surround[0]$buffer[$selected]{name}$selected_surround[1]";
 
-	# draw stuff
+	# draw greeting
 	if ($show_greeting) {
 		$draw_buffer .= $greeting;
 		$draw_buffer .= '-' x ((length $greeting) - 1) . "\n";
 	}
+
+	# draw prompt
 	$draw_buffer .= "$cmd_prompt$entries[$selected]{cmd}\n\n";
 
-	foreach (@buffer) {
-		$draw_buffer .= "$_->{name}\n";
-	}
+	#foreach (@buffer) {
+	#	$draw_buffer .= "$_->{name}\n";
+	#}
+	# idk if this is better but I like it more so fuck you and also
+	# it's a one liner, hipster gen-z solution
+	$draw_buffer .= join "\n", map { $_->{name} } @buffer;
 
 	addstr($draw_buffer);
 }
