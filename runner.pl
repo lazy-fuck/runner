@@ -124,7 +124,8 @@ sub update {
 # show entries;
 sub draw {
 	my $menu = shift;
-	
+	my $draw_buffer = "";
+
 	erase;
 
 	# initialize stuff. '@buffer' should be
@@ -143,14 +144,16 @@ sub draw {
 
 	# draw stuff
 	if ($show_greeting) {
-		addstr($greeting);
-		addstr('-' x ((length $greeting) - 1) . "\n");
+		$draw_buffer .= $greeting;
+		$draw_buffer .= '-' x ((length $greeting) - 1) . "\n";
 	}
-	addstr("$cmd_prompt$entries[$selected]{cmd}\n\n");
+	$draw_buffer .= "$cmd_prompt$entries[$selected]{cmd}\n\n";
 
 	foreach (@buffer) {
-		addstr("$_->{name}\n");
+		$draw_buffer .= "$_->{name}\n";
 	}
+
+	addstr($draw_buffer);
 }
 
 sub main {
