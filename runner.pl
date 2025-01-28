@@ -1,8 +1,11 @@
 #!/usr/bin/env perl
 #####################################
-# runner by maciej © 2024.				  #
+# runner by lazy-fuck © 2024.       #
 # See './LICENSE' for license info. #
 #####################################
+
+# INFO: search for @entries to add menu entries.
+# INFO: search for %key_to_action_map to map keys to actions (functions).
 
 use v5.40;
 use strict;
@@ -11,32 +14,33 @@ use warnings;
 use Curses;
 use Storable qw(dclone);
 
-my $version = "0.11a";
+my $version = "1.00";
 
 # set your greeting here
 my $greeting = "runner v$version | w/k: move up | s/j: move down | enter: run | q: quit\n";
-# .. or disable it completely
+# .. or disable it completely by setting 0
 my $show_greeting = 1;
 
 # $> is set to the effective user id
+# (weird ass perl variables..)
 my $cmd_prompt = $> == 0 ? '# ' : '$ ';
 
 # set surrounding characters (or strings) for selection
 my @selected_surround = ('[ ', ' ]');
 #my @selected_surround = ('>> ', ' <<');
-#my @selected_surround = ('fuck> ', ' <you');
+#my @selected_surround = ('f**k> ', ' <you');
 
 # !! add menu entries here
 my @entries = (
-	{
+	{	
+		name => "grep stuff (interactive)",
+		cmd  => 'xargs -I{} -- grep --color -irn \'{}\'',
+	}, {
 		name => "list directory",
 		cmd  => "ls --color -lhA .",
 	}, {
 		name => "fuck you",
 		cmd  => 'echo "Fuck you"',
-	}, {
-		name => "initialize perl project",
-		cmd  => 'perlinit new.pl',
 	}, {
 		name => "launch firefox",
 		cmd  => "firefox &",
@@ -44,17 +48,8 @@ my @entries = (
 		name => "flex",
 		cmd  => "fastfetch || neofetch",
 	}, {
-		name => "mount music partition",
-		cmd  => "su -c 'mount /dev/sdb1 /mnt/music'",
-	}, {
-		name => "mount data partition",
-		cmd  => "su -c 'mount /dev/sdb2 /mnt/data'",
-	}, {
 		name => "show disk usage for /",
 		cmd  => "du --si -d1 -t1 / 2>/dev/null"
-	}, {
-		name => "set brightness to 60",
-		cmd  => "brightness 60"
 	}
 );
 
@@ -154,8 +149,8 @@ sub draw {
 	#foreach (@buffer) {
 	#	$draw_buffer .= "$_->{name}\n";
 	#}
-	# idk if this is better but I like it more so fuck you and also
-	# it's a one liner, hipster gen-z solution
+	# idk if this is better but I like it more so fuck it and also
+	# it's a one-liner, hipster gen-z solution
 	$draw_buffer .= join "\n", map { $_->{name} } @buffer;
 
 	addstr($draw_buffer);
@@ -178,6 +173,7 @@ sub main {
 		update \%menu;
 	}
 
+	# a second call to endwin is fine as far as I'm aware..
 	endwin;
 	exit 0;
 }
