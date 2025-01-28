@@ -1,8 +1,8 @@
 #!/usr/bin/env perl
-#####################################
-# runner by lazy-fuck © 2024.       #
-# See './LICENSE' for license info. #
-#####################################
+#################################################
+# runner by lazy-fuck (Maciej Niesciur) © 2024. #
+# See './LICENSE' for license info.             #
+#################################################
 
 # INFO: search for @entries to add menu entries.
 # INFO: search for %key_to_action_map to map keys to actions (functions).
