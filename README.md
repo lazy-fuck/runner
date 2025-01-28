@@ -6,7 +6,7 @@ Essentially just a visually appealing way to run predefined commands in your ter
 
 ## Usage
 
-Open the source file and read. It's fairly simply to modify to suit your needs, even if you don't know Perl.
+Open the source file and read. It's fairly simple to modify to suit your needs, even if you don't know Perl.
 
 ## Dependencies
 
